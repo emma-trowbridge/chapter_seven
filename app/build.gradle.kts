@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.bignerdranch.android.chapter_three"
+    namespace = "com.bignerdranch.android.chapter_four"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.bignerdranch.android.chapter_three"
+        applicationId = "com.bignerdranch.android.chapter_four"
         minSdk = 34
         targetSdk = 34
         versionCode = 1

@@ -1,10 +1,10 @@
-package com.bignerdranch.android.chapter_three
+package com.bignerdranch.android.chapter_four
 
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.bignerdranch.android.chapter_three.databinding.ActivityMainBinding
+import com.bignerdranch.android.chapter_four.databinding.ActivityMainBinding
 
 private const val Tag = "MainActivity"
 
