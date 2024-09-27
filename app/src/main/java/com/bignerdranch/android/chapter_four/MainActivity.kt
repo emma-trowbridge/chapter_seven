@@ -1,9 +1,14 @@
 package com.bignerdranch.android.chapter_four
 
+import android.graphics.Color
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.Button
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.viewModels
+import com.google.android.material.snackbar.Snackbar
 import com.bignerdranch.android.chapter_four.databinding.ActivityMainBinding
 
 private const val Tag = "MainActivity"
@@ -12,9 +17,11 @@ class MainActivity : AppCompatActivity() {
 
     //private lateinit var trueButton: Button
     //private lateinit var falseButton: Button
+    private val quizViewModel: QuizViewModel by viewModels()
 
+    private lateinit var binding: ActivityMainBinding
 
-    private  val questionBank = listOf(
+    /*private  val questionBank = listOf(
         Question(R.string.question_australia, true),
         Question(R.string.question_oceans, true),
         Question(R.string.question_mideast, false),
@@ -23,14 +30,13 @@ class MainActivity : AppCompatActivity() {
         Question(R.string.question_asia, true)
 
     )//created list of questions...
-        //from Question.kt - looks for integer (R.string.question.()), and then boolean (true or false)
+        //from Question.kt - looks for integer (R.string.question.()), and then boolean (true or false)*/
 
-    private var answers = arrayOfNulls<Boolean>(questionBank.size) //tracks answer of each question, null = unanswered
+    //private var answers = arrayOfNulls<Boolean>(questionBank.size) //tracks answer of each question, null = unanswered
 
     private var correctAnswerCount = 0
 
-    private var currentIndex = 0 //always start with 0, first value of index is "0"
-    private lateinit var binding: ActivityMainBinding
+    //private var currentIndex = 0 //always start with 0, first value of index is "0"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,6 +46,7 @@ class MainActivity : AppCompatActivity() {
         //setContentView(R.layout.activity_main)
 
         Log.d(Tag, "onCreate(Bundle) called")
+        Log.d(Tag, "Got a QuizViewModel: $quizViewModel")
 
         //trueButton = findViewById(R.id.true_button)
         //falseButton = findViewById(R.id.false_button)
@@ -67,29 +74,38 @@ class MainActivity : AppCompatActivity() {
             }
 
         binding.previousButton.setOnClickListener{
-            currentIndex = if (currentIndex - 1 < 0) {
+            /*currentIndex = if (currentIndex - 1 < 0) {
                 questionBank.size - 1 //wraps around to the last question
             }else {
                 (currentIndex - 1) % questionBank.size
-            }
+            }*/
+
+            quizViewModel.moveToPrevious()
+
             updateQuestion()
         }
 
         binding.nextButton.setOnClickListener {
-            currentIndex = (currentIndex + 1) % questionBank.size
+            //currentIndex = (currentIndex + 1) % questionBank.size
             //val questionTextResId = questionBank[currentIndex].textResId
             //binding.questionTextView.setText(questionTextResId)
+
+            quizViewModel.moveToNext()
+
             updateQuestion()
         }
 
         binding.questionTextView.setOnClickListener{
-            currentIndex = (currentIndex + 1) % questionBank.size
+            //currentIndex = (currentIndex + 1) % questionBank.size
+
+            quizViewModel.moveToNextText()
+
             updateQuestion()
         }
 
-        binding.resetButton.setOnClickListener {
+        /*binding.resetButton.setOnClickListener {
             resetQuiz()
-        }
+        }*/
 
         //got rid of enableAnswerButtons() from next, previous, and question buttons
 
@@ -104,6 +120,11 @@ class MainActivity : AppCompatActivity() {
             super.onStart()
             Log.d(Tag, "onStart() called")
 
+        }
+
+        override fun onResume() {
+        super.onResume()
+        Log.d(Tag, "onResume() called")
         }
 
         override fun onPause(){
@@ -123,19 +144,23 @@ class MainActivity : AppCompatActivity() {
 
 
         private fun updateQuestion(){
-            val questionTextResId = questionBank[currentIndex].textResId
+            //val questionTextResId = questionBank[currentIndex].textResId
+            val questionTextResId = quizViewModel.currentQuestionText
+
             binding.questionTextView.setText(questionTextResId)
 
-            val answered = answers[currentIndex]
+            /*val answered = answers[currentIndex]
             if (answered != null) {
                 disableAnswerButtons() //if answered, disabled buttons
             } else {
                 enableAnswerButtons() //else enable the buttons so the user answers the question
-            }
+            }*/
         }
 
         private fun checkAnswer(userAnswer:Boolean){
-            val correctAnswer = questionBank[currentIndex].answer //grabbing second quality
+            //val correctAnswer = questionBank[currentIndex].answer //grabbing second quality
+            val correctAnswer = quizViewModel.currentQuestionAnswer
+
             val messageResID = if (userAnswer == correctAnswer){
                 correctAnswerCount++ //increments amount to counter
                 R.string.correct
@@ -149,12 +174,12 @@ class MainActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT)
                 .show()
 
-            answers[currentIndex] = userAnswer == correctAnswer //saves the users answer, boolean = true/false
+            /*answers[currentIndex] = userAnswer == correctAnswer //saves the users answer, boolean = true/false
             disableAnswerButtons() // disables both buttons after user answers
 
             if (currentIndex == questionBank.size - 1) {
                 computeUserScore() //checks to see if last question has been answered, if so it computes user's score after last question
-            }
+            }*/
         }
 
         private fun disableAnswerButtons() {
@@ -167,7 +192,7 @@ class MainActivity : AppCompatActivity() {
             binding.falseButton.isEnabled = true
         }
 
-        private fun computeUserScore() {
+        /*private fun computeUserScore() {
             val score = (correctAnswerCount.toDouble() / questionBank.size) * 100
             val scoreMessage = String.format("Your score is: %.1f%%", score) //%.1f formats to 1 dec place, %% adds %
             Toast.makeText(
@@ -176,8 +201,8 @@ class MainActivity : AppCompatActivity() {
                 Toast.LENGTH_LONG,
             )
                 .show()
-        }
-        private fun resetQuiz() {
+        }*/
+        /*private fun resetQuiz() {
             correctAnswerCount = 0 //reset correct answer counter
             currentIndex = 0 //reset question index
             answers = arrayOfNulls(questionBank.size) //resets answers to null (unanswered)
@@ -192,5 +217,5 @@ class MainActivity : AppCompatActivity() {
                 Toast.LENGTH_LONG
             )
                 .show()
-        }
+        }*/
     }
