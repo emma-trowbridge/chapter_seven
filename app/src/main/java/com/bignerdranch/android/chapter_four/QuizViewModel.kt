@@ -18,7 +18,7 @@ class QuizViewModel(private val savedStateHandle: SavedStateHandle):ViewModel() 
         Log.d(TAG, "ViewModel instance about to be destroyed")
     }*/
 
-    private  val questionBank = listOf(
+    private val questionBank = listOf(
         Question(R.string.question_australia, true),
         Question(R.string.question_oceans, true),
         Question(R.string.question_mideast, false),
