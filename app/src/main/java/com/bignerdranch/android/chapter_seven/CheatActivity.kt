@@ -44,7 +44,7 @@ class CheatActivity : AppCompatActivity() {
             setAnswerShownResult(true)
         }
     }
-
+    //functions to show answer - displays answer when button is clicked/restored
     private fun showAnswer() {
         val answerText = when {
             answerIsTrue -> R.string.true_button

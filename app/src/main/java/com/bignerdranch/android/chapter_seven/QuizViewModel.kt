@@ -9,15 +9,6 @@ const val IS_CHEATER_KEY = "IS_CHEATER_KEY"
 
 class QuizViewModel(private val savedStateHandle: SavedStateHandle):ViewModel() {
 
-    /*init {
-        Log.d(TAG, "ViewModel instance created")
-    }
-
-    override fun onCleared() {
-
-        Log.d(TAG, "ViewModel instance about to be destroyed")
-    }*/
-
     private val questionBank = listOf(
         Question(R.string.question_australia, true),
         Question(R.string.question_oceans, true),
@@ -26,6 +17,8 @@ class QuizViewModel(private val savedStateHandle: SavedStateHandle):ViewModel() 
         Question(R.string.question_americas, true),
         Question(R.string.question_asia, true)
     )
+
+    private var cheats = MutableList(questionBank.size) { false } //tracks cheats per question
 
     var isCheater: Boolean
         get() = savedStateHandle.get(IS_CHEATER_KEY) ?: false
@@ -40,6 +33,16 @@ class QuizViewModel(private val savedStateHandle: SavedStateHandle):ViewModel() 
 
     val currentQuestionText: Int
         get() = questionBank[currentIndex].textResId
+
+    //cheater for current question:
+    fun isCheaterForCurrentQuestion(): Boolean {
+        return cheats[currentIndex]
+    }
+
+    //updates status for current questions and takes value
+    fun setCheaterForCurrentQuestion(value: Boolean) {
+        cheats[currentIndex] = value
+    }
 
     fun moveToNext() {
 
