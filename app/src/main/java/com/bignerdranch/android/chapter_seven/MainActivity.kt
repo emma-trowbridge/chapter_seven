@@ -1,10 +1,17 @@
 package com.bignerdranch.android.chapter_seven
 
+import android.app.Activity
+import android.content.ClipData.newIntent
+import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import com.google.android.material.snackbar.Snackbar
 import com.bignerdranch.android.chapter_seven.databinding.ActivityMainBinding
 
 private const val Tag = "MainActivity"
@@ -97,6 +104,12 @@ class MainActivity : AppCompatActivity() {
             quizViewModel.moveToNextText()
 
             updateQuestion()
+        }
+
+        binding.cheatButton.setOnClickListener{
+            // Start CheatActivity
+            val intent = Intent(this, CheatActivity::class.java)
+            startActivity(intent)
         }
 
         /*binding.resetButton.setOnClickListener {
