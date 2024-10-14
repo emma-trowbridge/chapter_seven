@@ -21,7 +21,16 @@ class MainActivity : AppCompatActivity() {
     //private lateinit var trueButton: Button
     //private lateinit var falseButton: Button
     private val quizViewModel: QuizViewModel by viewModels()
+    private val cheatLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
 
+        // Handle the result
+        if (result.resultCode == Activity.RESULT_OK) {
+            quizViewModel.isCheater =
+                result.data?.getBooleanExtra(EXTRA_IS_SHOWN, false) ?: false
+        }
+    }
     private lateinit var binding: ActivityMainBinding
 
     /*private  val questionBank = listOf(
@@ -108,8 +117,12 @@ class MainActivity : AppCompatActivity() {
 
         binding.cheatButton.setOnClickListener{
             // Start CheatActivity
-            val intent = Intent(this, CheatActivity::class.java)
-            startActivity(intent)
+            //val intent = Intent(this, CheatActivity::class.java)
+            val answerIsTrue = quizViewModel.currentQuestionAnswer
+            val intent = CheatActivity.newIntent(this@MainActivity, answerIsTrue)
+
+            //startActivity(intent)
+            cheatLauncher.launch(intent)
         }
 
         /*binding.resetButton.setOnClickListener {
@@ -167,21 +180,40 @@ class MainActivity : AppCompatActivity() {
         }
 
         private fun checkAnswer(userAnswer:Boolean){
-            //val correctAnswer = questionBank[currentIndex].answer //grabbing second quality
             val correctAnswer = quizViewModel.currentQuestionAnswer
 
-            val messageResID = if (userAnswer == correctAnswer){
+            /*val messageResID = if (userAnswer == correctAnswer){
                 correctAnswerCount++ //increments amount to counter
                 R.string.correct
             } else{
                 R.string.incorrect
             }
+           */
+
+            val messageResId = when {
+                quizViewModel.isCheater -> R.string.judgment_toast
+                userAnswer == correctAnswer -> R.string.correct
+                else -> R.string.incorrect
+            }
+
 
             Toast.makeText(
                 this,
-                messageResID,
+                messageResId,
                 Toast.LENGTH_SHORT)
                 .show()
+
+
+
+
+
+
+
+
+
+
+
+
 
             /*answers[currentIndex] = userAnswer == correctAnswer //saves the users answer, boolean = true/false
             disableAnswerButtons() // disables both buttons after user answers
