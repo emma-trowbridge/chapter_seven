@@ -1,6 +1,5 @@
-package com.bignerdranch.android.chapter_four
+package com.bignerdranch.android.chapter_seven
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 

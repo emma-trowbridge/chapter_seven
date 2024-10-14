@@ -1,15 +1,11 @@
-package com.bignerdranch.android.chapter_four
+package com.bignerdranch.android.chapter_seven
 
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.widget.Button
 import android.widget.Toast
 import androidx.activity.viewModels
-import com.google.android.material.snackbar.Snackbar
-import com.bignerdranch.android.chapter_four.databinding.ActivityMainBinding
+import com.bignerdranch.android.chapter_seven.databinding.ActivityMainBinding
 
 private const val Tag = "MainActivity"
 

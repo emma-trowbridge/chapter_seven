@@ -1,4 +1,4 @@
-package com.bignerdranch.android.chapter_four
+package com.bignerdranch.android.chapter_seven
 
 import androidx.annotation.StringRes
 
